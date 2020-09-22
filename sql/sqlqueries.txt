@@ -1,0 +1,45 @@
+create database sqlassign;
+
+use sqlassign;
+
+create table electricity_connection_type(id int(11)  primary key,connection_name varchar(20) not null);
+
+desc electricity_connection_type;
+
+create table slab(id int(11) primary key,connection_type_id int(11) not null, constraint fk  FOREIGN KEY(connection_type_id) REFERENCES electricity_connection_type(id), from_unit int(11) not null,to_unit int(11) not null,rate double not null);
+desc slab;
+create table building_type(id int(11) primary key,name varchar(100) not null,connection_type_id int(11) not null,constraint fk1 FOREIGN KEY(connection_type_id) REFERENCES electricity_connection_type(id));
+
+desc building_type;
+
+create table building(id int(11) primary key,owner_name varchar(100) not null,addresss varchar(100) not null,building_type_id int(11) not null,constraint fk2 FOREIGN KEY(building_type_id) REFERENCES building_type(connection_type_id),contact_number varchar(100) not null,email_address varchar(100));
+
+desc building;
+
+alter table building RENAME column  owner_name TO building_owner_name;
+
+desc building;
+
+alter table building modify column addresss varchar(255);
+
+desc building;
+
+alter table electricity_connection_type add constraint ck check(connection_name in('commercial','home'));
+
+desc electricity_connection_type;
+rename table building to building_details;
+
+desc building_details;
+drop table building_details;
+
+insert into electricity_connection_type(id,connection_name) values(10,'home');
+
+insert into electricity_connection_type(id,connection_name) values(20,'commercial');
+
+insert into building_type values (10,'dinesh',10);
+
+insert into building_type values (50,'dinesh',20);
+
+insert into building_type values (60,'dinesh',20);
+
+select * from building_type;
